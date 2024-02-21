@@ -36,8 +36,8 @@ The Dockerfile can be thought of as a recipe for building the image and handles 
 
 ### Usage
 
-- **Build** To build the docker image from the Dockerfile, run this command in the root of the working directory: 'docker build -t <image_name> .' where '<image_name>' is the name you would like to give the new image.
-- **Deploy** To run the docker image on your instance, run this command: 'docker run -p 5000:5000 <image_name>' where '<image_name>' is the name of the docker image as provided in the build stage. Please note, the optional -d flag can be added to run the application in detached mode. Otherwise ctrl+c will stop the container.
+- **Build** To build the docker image from the Dockerfile, run this command in the root of the working directory: `docker build -t <image_name> .` where `<image_name>` is the name you would like to give the new image.
+- **Deploy** To run the docker image on your instance, run this command: `docker run -p 5000:5000 <image_name>` where `<image_name>` is the name of the docker image as provided in the build stage. Please note, the optional `-d` flag can be added to run the application in detached mode. Otherwise `ctrl+c` will stop the container.
 
 To access the application, go to localhost port 5000: `http://127.0.0.1:5000`. Here you will be meet with the following two pages:
 
