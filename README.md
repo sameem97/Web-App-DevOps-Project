@@ -30,16 +30,16 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 
 ### Prerequisites
 
-For the application to succesfully run, you need to install the following packages:
+The preferred method for running this application is via Docker. The benefit of using Docker is the application can be deployed in different environments without the risk of dependency or OS issues. The only prerequisite to running the application on a new instance is the installation of Docker.
 
-- flask (version 2.2.2)
-- pyodbc (version 4.0.39)
-- SQLAlchemy (version 2.0.21)
-- werkzeug (version 2.2.3)
+The Dockerfile can be thought of as a recipe for building the image and handles the installation of Python packages (see requirements.txt) and system dependencies, configuration of environment variables and exposing network ports. Running the docker image will create a new instance of a container hosting the application.
 
 ### Usage
 
-To run the application, you simply need to run the `app.py` script in this repository. Once the application starts you should be able to access it locally at `http://127.0.0.1:5000`. Here you will be meet with the following two pages:
+- **Build** To build the docker image from the Dockerfile, run this command in the root of the working directory: 'docker build -t <image_name> .' where '<image_name>' is the name you would like to give the new image.
+- **Deploy** To run the docker image on your instance, run this command: 'docker run -p 5000:5000 <image_name>' where '<image_name>' is the name of the docker image as provided in the build stage. Please note, the optional -d flag can be added to run the application in detached mode. Otherwise ctrl+c will stop the container.
+
+To access the application, go to localhost port 5000: `http://127.0.0.1:5000`. Here you will be meet with the following two pages:
 
 1. **Order List Page:** Navigate to the "Order List" page to view all existing orders. Use the pagination controls to navigate between pages.
 
@@ -53,6 +53,8 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
+- **Containerisation:** Docker is used as the containerisation platform. 
+  
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
