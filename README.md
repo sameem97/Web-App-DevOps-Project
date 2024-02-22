@@ -1,7 +1,10 @@
 # Web-App-DevOps-Project
 
-Welcome to the Web App DevOps Project repo! This application allows you to efficiently manage and track orders for a potential business. It provides an intuitive user interface for viewing existing orders and adding new ones.
+Welcome to the Web App DevOps Project repo! The purpose of this repo is to showcase the development of an Azure End-to-End DevOps Pipeline to build and manage a Python Flask application. The application allows efficient management and tracking of orders for a business. It provides an intuitive user interface for viewing existing orders and adding new ones.
 
+### Disclaimer 
+Needless to say, the processes and technologies used here are overkill for the simplicity of the application and does not represent a typical implementation in industry. Nonetheless, it serves as a learning exercise for the use of the toolsets involved.
+ 
 ## Table of Contents
 
 - [Features](#features)
@@ -32,13 +35,23 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 
 The preferred method for running this application is via Docker. The benefit of using Docker is the application can be deployed in different environments without the risk of dependency or OS issues. The only prerequisite to running the application on a new instance is the installation of Docker.
 
-The Dockerfile can be thought of as a recipe for building the image and handles the installation of Python packages (see requirements.txt) and system dependencies, configuration of environment variables and exposing network ports. Running the docker image will create a new instance of a container hosting the application.
-
 ### Usage
 
-- **Build** To build the docker image from the Dockerfile, run this command in the root of the working directory: `docker build -t <image_name> .` where `<image_name>` is the name you would like to give the new image.
-- **Deploy** To run the docker image on your instance, run this command: `docker run -p 5000:5000 <image_name>` where `<image_name>` is the name of the docker image as provided in the build stage. Please note, the optional `-d` flag can be added to run the application in detached mode. Otherwise `ctrl+c` will stop the container.
+The simplest way to deploy this application is by pulling dpwn the image from DockerHub using this command: `docker pull sameem97/flask-track-orders:v1.0`. Alternatively you can build the image using the Dockerfile (see Containerisation Process and Build below). In either case, you will then need to run the image (see Deploy below) which creates a new instance of a container hosting the application.
 
+### Containerisation Process
+
+The containerisation process starts with the Dockerfile. It can be thought of as a recipe for building the Docker image and handles the installation of Python packages (see requirements.txt) and system dependencies, configuration of environment variables and exposing network ports. The image, like a standardised shipping container, contains everything required to run the application.
+
+### Build
+
+- To build the docker image from the Dockerfile, run this command in the root of the working directory: `docker build -t <image_name> .` where `<image_name>` is the name you would like to give the new image.
+
+### Deploy
+
+- To run the docker image on your instance, run this command: `docker run -p 5000:5000 <image_name>` where `-p 5000:5000` is a port mapping between the host machine port 5000 to the container port 5000 as exposed in the Dockerfile and `<image_name>` is the name of the docker image as provided in the build stage. Please note, the optional `-d` flag can be added to run the application in detached mode. Otherwise `ctrl+c` will stop the container.
+
+### Access
 To access the application, go to localhost port 5000: `http://127.0.0.1:5000`. Here you will be meet with the following two pages:
 
 1. **Order List Page:** Navigate to the "Order List" page to view all existing orders. Use the pagination controls to navigate between pages.
@@ -53,7 +66,7 @@ To access the application, go to localhost port 5000: `http://127.0.0.1:5000`. H
 
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
-- **Containerisation:** Docker is used as the containerisation platform. 
+- **Containerisation:** Docker is used as the containerisation platform. The image is available for access in DockerHub under sameem97/flask-track-orders.
   
 ## Contributors 
 
