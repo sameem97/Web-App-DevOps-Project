@@ -37,7 +37,7 @@ The preferred method for running this application is via Docker. The benefit of 
 
 ### Usage
 
-The simplest way to deploy this application is by pulling dpwn the image from DockerHub using this command: `docker pull sameem97/flask-track-orders:v1.0`. Alternatively you can build the image using the Dockerfile (see Containerisation Process and Build below). In either case, you will then need to run the image (see Deploy below) which creates a new instance of a container hosting the application.
+The simplest way to deploy this application is by pulling dpwn the image from DockerHub using this command: `docker pull sameem97/flask-track-orders:latest`. Alternatively you can build the image using the Dockerfile (see Containerisation Process and Build below). In either case, you will then need to run the image (see Deploy below) which creates a new instance of a container hosting the application.
 
 ### Containerisation Process
 
