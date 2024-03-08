@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=3.0.0"
+      version = "=3.94.0"
     }
   }
 }
@@ -30,7 +30,7 @@ module "aks_cluster" {
 
   # Input variables for the AKS cluster module
   dns_prefix         = "myaks-project"
-  kubernetes_version = "1.26.6"
+  kubernetes_version = "1.29.0"
   client_id          = var.client_id
   client_secret      = var.client_secret
 
