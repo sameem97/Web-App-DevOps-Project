@@ -9,9 +9,9 @@
 
 1. **Define environment variables** in your shell start up file. As a minimum this will include sensitive information such as your service principal credentials or public IPs, but also any other variables as defined in the module variables.tf file that do not have a default value.
 
-2. **Initialise networking module** in your module directory.
+2. **Initialise the child networking module**. Ensure you are in the module directory.
 
-3. **Create a `main.tf` file** in your Terraform project directory.
+3. **Create a `main.tf` file in the root module**. The root module is your Terraform project directory which will call the child module.
 
 ```hcl
 # main.tf
@@ -21,7 +21,7 @@ terraform {
   required_providers {
     azurerm = {
       source = "hashicorp/azurerm"
-      version = "=3.0.0"
+      version = "=3.94.0"
     }
   }
 }
@@ -31,13 +31,7 @@ provider "azurerm" {
   features {}  # Optional: Enable specific features
 }
 
-# Create a resource group for the networking resources
-resource "azurerm_resource_group" "example-resource-group" {
-  name     = "example-resources"
-  location = "UK South"
-}
-
-# Call the networking module (child directory)
+# Call the networking module (child directory). Add input variables as required.
 module "networking" {
     source = "./networking-module-path"
 }
