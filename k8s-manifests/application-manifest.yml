@@ -21,7 +21,7 @@ spec:
         - containerPort: 5000
   strategy:
     type: RollingUpdate
-    RollingUpdate:
+    rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
 ---
