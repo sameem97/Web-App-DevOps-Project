@@ -31,7 +31,8 @@ metadata:
   name: flask-app-service
 spec:
   ports:
-    - port: 80
+    - protocol: TCP
+      port: 80
       targetPort: 5000
   selector:
     app: flask-app
