@@ -59,6 +59,16 @@ To access the application, go to localhost port 5000: `http://127.0.0.1:5000`. H
 
 2. **Add New Order Page:** Click on the "Add New Order" tab to access the order form. Complete all required fields and ensure that your entries meet the specified criteria.
 
+### Azure Kubernetes Service (AKS)
+
+In industry, Cloud services are often utilised for components of an application e.g. Azure Database service is used in this application to store order data. In addition, a managed Kubernetes cluster is another service utilised as a container orchestration platform, the benefits of which include improved reliability and scalabaility. For this reason, AKS is my preferred environment for the deployment of this application.
+
+I have utilised Terraform Infrastructure as Code (IaC) with the  Azure resource manager provider, to provision the cluster as well as the required networking infrastructure.
+
+In order to deploy the image to the cluster, I've described the target state of the cluster using k8s-manifests which provisions the necessary resource types to manage the application. This includes a Deployment with 2 replicas and a ClusterIP service allowing internal cluster communications.
+
+The update strategy is a rolling update, allowing a maximum of one pod to be unavailable, minimising downtime during upgrades e.g. updated docker image.
+
 ## Technology Stack
 
 - **Backend:** Flask is used to build the backend of the application, handling routing, data processing, and interactions with the database.
@@ -68,8 +78,12 @@ To access the application, go to localhost port 5000: `http://127.0.0.1:5000`. H
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
 - **Containerisation:** Docker is used as the containerisation platform. The image is available for access in DockerHub under sameem97/flask-track-orders.
+
+- **IaC:** Terraform is used to provision the AKS cluster and the necessary networking infrastructure, as the target environment for the deployment of the application.
+
+- **Deployment:** The application is deployed in an AKS cluster, the benefits of which include improved availability and scalability.
   
-## Contributors 
+## Contributors
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
 
