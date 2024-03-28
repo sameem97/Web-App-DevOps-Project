@@ -69,6 +69,14 @@ In order to deploy the image to the cluster, I've described the target state of 
 
 The update strategy is a rolling update, allowing a maximum of one pod to be unavailable, minimising downtime during upgrades e.g. updated docker image.
 
+### Azure DevOps
+
+Azure DevOps is an end to end development platform providing various functionality from repository hosting and version control to task tracking and other project management capabilities. 
+
+One of its most well known features is its robust CI/CD pipelines; I have utilised a build pipeline with a buildAndPush task to automate the docker image build upon commits to the main branch and pushing this new image into DockerHub. The release pipeline subsequently utilises a Deploy to Kubernetes task to pull down this new image from DockerHub and deploy it to the aks-cluster.
+
+Whilst I haven't added testing to the CI stage yet (I have been testing the application manually), CD is only triggered upon a successful build and passing of the tests. In this manner, CI/CD is an enabler for developers to ship software to users much faster, receiving feedback early if tests fail so that they can iterate rapidly and with confidence.
+
 ## Technology Stack
 
 - **Backend:** Flask is used to build the backend of the application, handling routing, data processing, and interactions with the database.
@@ -82,6 +90,8 @@ The update strategy is a rolling update, allowing a maximum of one pod to be una
 - **IaC:** Terraform is used to provision the AKS cluster and the necessary networking infrastructure, as the target environment for the deployment of the application.
 
 - **Deployment:** The application is deployed in an AKS cluster, the benefits of which include improved availability and scalability.
+
+- **CI/CD:** Azure Pipelines as part of Azure DevOps is utilised for CI/CD, allowing automated build, test and deploy so developers can ship updates to users more quickly and with confidence.
   
 ## Contributors
 
