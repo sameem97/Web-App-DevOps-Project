@@ -1,3 +1,5 @@
+<a id="readme-top"></a>
+
 # Web-App-DevOps-Project
 
 Welcome to the Web App DevOps Project repo! The purpose of this repo is to showcase the development of an Azure End-to-End DevOps Pipeline to build and manage a Python Flask application. The application allows efficient management and tracking of orders for a business. It provides an intuitive user interface for viewing existing orders and adding new ones.
@@ -6,11 +8,25 @@ Welcome to the Web App DevOps Project repo! The purpose of this repo is to showc
 
 Needless to say, the processes and technologies used here are overkill for the simplicity of the application and does not represent a typical implementation in industry. Nonetheless, it serves as a learning exercise for the use of the toolsets involved.
 
+In addition, the application is an internal business application, and therefore it is not expected to receive external customer traffic from the internet. Where this is required, you may need to implement usage of a load balancer or ingress, which is outside the scope of this project.
+
+Lastly, whilst the application code isn't the main focus of this project, it determines the requirements for the infrastructure and DevOps workflow being implemented, which in this case is a standard Build, Push and Deploy.
+
 ## Table of Contents
 
 - [Features](#features)
-- [Getting Started](#getting-started)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+- [Containerisation Process](#containerisation-process)
+- [Build](#build)
+- [Deploy](#deploy)
+- [Access](#access)
+- [Azure Kubernetes Service](#azure-kubernetes-service-aks)
+- [Azure DevOps and CI/CD](#azure-devops-and-cicd)
+- [AKS Cluster Monitoring](#aks-cluster-monitoring)
+- [Azure Key Vault](#azure-key-vault)
 - [Technology Stack](#technology-stack)
+- [Architecture](#architecture)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -30,7 +46,39 @@ Needless to say, the processes and technologies used here are overkill for the s
 
 - **Data Validation:** Ensure data accuracy and completeness with required fields, date restrictions, and card number validation.
 
-## Getting Started
+### Enhancements
+
+- **Adding a Delivery Date Column to Order List:**
+
+   <table style="border-style:solid;border-width:thin;border-left-width:thick;">
+   <tr><th>📝 NOTE</th></tr>
+   <tr><td>This feature was requested and then reverted. See <a href="https://github.com/sameem97/Web-App-DevOps-Project/issues/1">issue #1</a></td></tr> 
+   </table>
+
+- <details>
+  <summary>If requested again, follow these instructions:</summary>
+
+  1.  In `app.py` modify the following:
+
+      a. `Order` class to include `delivery_date = Column('Delivery Date', DateTime)`
+
+      b. `@app.route` `add_order` function to include `delivery_date = request.form['delivery_date']`
+
+      c. `new_order` object to include `delivery_date=delivery_date`
+
+  2.  In `order.html` modify the following:
+
+      a. `<th>` elements to include `<th>Delivery Date</th>`
+
+      b. `<td>` elements to include `<td>{{ order.delivery_date }}</td>`
+
+      c. `<form>` element to include `<label for="delivery_date">Delivery Date:</label>` and `<input type="date" id="delivery_date" name="delivery_date"><br><br>`
+
+  </details>
+
+<p>
+  <a href="#readme-top">back to top</a>
+</p>
 
 ### Prerequisites
 
@@ -38,7 +86,7 @@ The preferred method for running this application is via Docker. The benefit of 
 
 ### Usage
 
-The simplest way to deploy this application is by pulling dpwn the image from DockerHub using this command: `docker pull sameem97/flask-track-orders:latest`. Alternatively you can build the image using the Dockerfile (see Containerisation Process and Build below). In either case, you will then need to run the image (see Deploy below) which creates a new instance of a container hosting the application.
+The simplest way to deploy this application on a given instance is by pulling down the image from DockerHub using this command: `docker pull sameem97/flask-track-orders:latest`. Alternatively you can build the image using the Dockerfile (see Containerisation Process and Build). In either case, you will then need to run the image (see Deploy below) which creates a new instance of a container hosting the application.
 
 ### Containerisation Process
 
@@ -50,10 +98,11 @@ The containerisation process starts with the Dockerfile. It can be thought of as
 
 ### Deploy
 
-- To run the docker image on your instance, run this command: `docker run -p 5000:5000 <image_name>` where `-p 5000:5000` is a port mapping between the host machine port 5000 to the container port 5000 as exposed in the Dockerfile and `<image_name>` is the name of the docker image as provided in the build stage. Please note, the optional `-d` flag can be added to run the application in detached mode. Otherwise `ctrl+c` will stop the container.
+- To run the docker image on your instance, you can run the command: `docker run -p 5000:5000 <image_name>` where `-p 5000:5000` is a port mapping between the host machine port 5000 to the container port 5000 as exposed in the Dockerfile and `<image_name>` is the name of the docker image as provided in the build stage. Please note, the optional `-d` flag can be added to run the application in detached mode. Otherwise `ctrl+c` will stop the container.
 
 ### Access
-To access the application, go to localhost port 5000: `http://127.0.0.1:5000`. Here you will be meet with the following two pages:
+
+To application can be accessed via localhost port 5000: `http://127.0.0.1:5000`. Here you would be met with the following two pages:
 
 1. **Order List Page:** Navigate to the "Order List" page to view all existing orders. Use the pagination controls to navigate between pages.
 
@@ -61,17 +110,17 @@ To access the application, go to localhost port 5000: `http://127.0.0.1:5000`. H
 
 ### Azure Kubernetes Service (AKS)
 
-In industry, Cloud services are often utilised for components of an application e.g. Azure Database service is used in this application to store order data. In addition, a managed Kubernetes cluster is another service utilised as a container orchestration platform, the benefits of which include improved reliability and scalabaility. For this reason, AKS is my preferred environment for the deployment of this application.
+I've utilised a managed Kubernetes cluster hosted by Azure (AKS) as the deployment environment for the application. The benefits of using AKS include improved reliability and scalabaility.
 
-I have utilised Terraform Infrastructure as Code (IaC) with the  Azure resource manager provider, to provision the cluster as well as the required networking infrastructure.
+I have utilised Terraform Infrastructure as Code (IaC) with the  Azure resource manager provider, to provision the cluster as well as the required networking infrastructure. See `aks-terraform` folder for modules and usage instructions.
 
-In order to deploy the image to the cluster, I've described the target state of the cluster using k8s-manifests which provisions the necessary resource types to manage the application. This includes a Deployment with 2 replicas and a ClusterIP service allowing internal cluster communications.
+In order to deploy the image to the cluster, I've described the target state of the cluster using k8s-manifests which provisions the necessary resource types to manage the application. This includes a Deployment with 3 replicas and a ClusterIP service allowing internal cluster communications.
 
 The update strategy is a rolling update, allowing a maximum of one pod to be unavailable, minimising downtime during upgrades e.g. updated docker image.
 
-### Azure DevOps
+### Azure DevOps and CI/CD
 
-Azure DevOps is an end to end development platform providing various functionality from repository hosting and version control to task tracking and other project management capabilities. 
+Azure DevOps is an end to end development platform providing various functionality from repository hosting and version control to task tracking and other project management capabilities.
 
 One of its most well known features is its robust CI/CD pipelines; I have utilised a build pipeline with a buildAndPush task to automate the docker image build upon commits to the main branch and pushing this new image into DockerHub. The release pipeline subsequently utilises a Deploy to Kubernetes task to pull down this new image from DockerHub and deploy it to the aks-cluster.
 
@@ -94,6 +143,9 @@ Azure Monitor is a comprehensive monitoring and management solution provided by 
 ![Screenshot 2024-04-03 at 13 37 40](https://github.com/sameem97/Web-App-DevOps-Project/assets/103259615/dd0dd37a-743f-499d-a205-ab3aae7d20c7)
 ![Screenshot 2024-04-03 at 13 38 23](https://github.com/sameem97/Web-App-DevOps-Project/assets/103259615/75d257dd-038c-4620-91b2-ca692f071b43)
 
+### Azure Key Vault
+
+- Azure Key Vault is a secrets management tool and is used for the secure storage and retrieval of database connection credentials. Authentication has been provided via RBAC and Managed Identities such that only applications deployed in the cluster have access to the vault.
 
 ## Technology Stack
 
@@ -112,7 +164,15 @@ Azure Monitor is a comprehensive monitoring and management solution provided by 
 - **CI/CD:** Azure Pipelines as part of Azure DevOps is utilised for CI/CD, allowing automated build, test and deploy so developers can ship updates to users more quickly and with confidence.
 
 - **Monitoring:** Azure Monitor is used as a comprehensive monitoring solution for the cluster.
-  
+
+- **Secrets Manager:** Azure Key Vault is used for secure management of database connection credentials.
+
+## Architecture
+
+The final architecture is shown by the UML diagram below:
+
+![architecture](architecture.png)
+
 ## Contributors
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
