@@ -21,7 +21,7 @@ steps:
     inputs:
       action: 'deploy'
       connectionType: 'azureResourceManager'
-      azureSubscriptionConnection: 'Sameem Nazari DevOps(4f4f3acd-6d28-4d0c-a47d-7ee8d3c5d6d4)'
+      azureSubscriptionConnection: 'azurerm_service_connection'
       azureResourceGroup: 'Networking'
       kubernetesCluster: 'my-aks-cluster'
       manifests: 'k8s-manifests/application-manifest.yml'
